@@ -42,15 +42,26 @@ def can_partition(nums):
     # Target is half of the total sum
     target = total_sum // 2
     
-    # Create a dynamic programming table
-    # dp[j] represents whether a subset of sum j can be created
-    dp = [False] * (target + 1)
-    dp[0] = True
+    # Create a set of possible subset sums
+    subset_sums = {0}
     
-    # Compute possible subset sums
+    # Compute all possible subset sums
     for num in nums:
-        # Iterate backwards to avoid using the same element multiple times
-        for j in range(target, num - 1, -1):
-            dp[j] |= dp[j - num]
+        # Create a new set to store sums to avoid modifying while iterating
+        new_subset_sums = subset_sums.copy()
+        
+        # Add current number to existing subset sums
+        for subset_sum in subset_sums:
+            new_sum = subset_sum + num
+            
+            # If we hit the target sum, return True
+            if new_sum == target:
+                return True
+            
+            # Only add if new sum is less than target
+            if new_sum < target:
+                new_subset_sums.add(new_sum)
+        
+        subset_sums = new_subset_sums
     
-    return dp[target]
+    return False
