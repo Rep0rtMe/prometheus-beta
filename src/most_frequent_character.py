@@ -27,4 +27,5 @@ def find_most_frequent_character(input_string):
         char_counts[char] = char_counts.get(char, 0) + 1
     
     # Find the character with max frequency
-    return max(char_counts, key=char_counts.get)
+    # If there's a tie, the key with the first highest count will be returned
+    return max(char_counts, key=lambda k: (char_counts[k], input_string.index(k)))
