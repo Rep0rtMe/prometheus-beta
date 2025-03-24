@@ -16,10 +16,21 @@ def can_partition(nums):
         True
         >>> can_partition([1, 2, 3, 5])
         False
+    
+    Raises:
+        TypeError: If input is not a list or contains non-positive numbers
     """
-    # Check for empty or None input
+    # Validate input type
+    if not isinstance(nums, list):
+        raise TypeError("Input must be a list")
+    
+    # Check for empty list
     if not nums:
         return False
+    
+    # Validate all elements are positive integers
+    if any(not isinstance(x, int) or x <= 0 for x in nums):
+        raise TypeError("All elements must be positive integers")
     
     # Calculate total sum of the array
     total_sum = sum(nums)
