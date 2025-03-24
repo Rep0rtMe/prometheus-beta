@@ -22,9 +22,9 @@ def test_all_unique_characters():
     result = find_most_frequent_character("abcde")
     assert result in list("abcde")
 
-def test_spaces_and_special_characters():
-    """Test string with spaces and special characters"""
-    assert find_most_frequent_character("hello world!!") == ' '
+def test_string_with_punctuation():
+    """Test string with punctuation and repeated first character"""
+    assert find_most_frequent_character("hello, world!") == 'l'
 
 def test_invalid_input_type():
     """Test that TypeError is raised for non-string input"""
