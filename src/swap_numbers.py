@@ -18,9 +18,12 @@ def swap_numbers(a, b):
     if not (isinstance(a, int) and isinstance(b, int)):
         raise TypeError("Both inputs must be integers")
     
-    # Swap numbers using bitwise XOR operation
-    a = a ^ b
-    b = a ^ b
-    a = a ^ b
+    # Create copies to avoid modifying original inputs
+    x, y = a, b
     
-    return b, a
+    # Swap numbers using bitwise XOR operation
+    x = x ^ y
+    y = x ^ y
+    x = x ^ y
+    
+    return y, x
