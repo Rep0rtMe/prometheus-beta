@@ -51,6 +51,6 @@ def can_partition(nums):
     for num in nums:
         # Iterate backwards to avoid using the same element multiple times
         for j in range(target, num - 1, -1):
-            dp[j] = dp[j] or dp[j - num]
+            dp[j] |= dp[j - num]
     
     return dp[target]
