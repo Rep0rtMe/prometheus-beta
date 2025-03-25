@@ -12,6 +12,10 @@ def is_balanced_parentheses(s: str) -> bool:
     Returns:
         bool: True if parentheses are balanced, False otherwise
     
+    Raises:
+        TypeError: If input is not a string
+        ValueError: If input contains non-parentheses characters
+    
     Examples:
         >>> is_balanced_parentheses("()")
         True
@@ -24,6 +28,14 @@ def is_balanced_parentheses(s: str) -> bool:
         >>> is_balanced_parentheses(")(")
         False
     """
+    # Validate input type
+    if not isinstance(s, str):
+        raise TypeError("Input must be a string")
+    
+    # Validate input characters
+    if s and not all(char in '()' for char in s):
+        raise ValueError("Input must contain only parentheses")
+    
     # Use a stack to track opening parentheses
     stack = []
     
