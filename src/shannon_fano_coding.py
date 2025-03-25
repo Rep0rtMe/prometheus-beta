@@ -96,9 +96,11 @@ def shannon_fano_decode(codes: Dict[str, str], compressed: str) -> str:
     # Decode the compressed string
     decoded = []
     current_code = ''
+    remaining = compressed
     
-    for bit in compressed:
-        current_code += bit
+    while remaining:
+        current_code += remaining[0]
+        remaining = remaining[1:]
         
         # Check if current code matches a known encoding
         if current_code in reverse_codes:
@@ -106,7 +108,7 @@ def shannon_fano_decode(codes: Dict[str, str], compressed: str) -> str:
             current_code = ''
     
     # Ensure entire string was decoded
-    if current_code:
+    if current_code or remaining:
         raise ValueError("Unable to fully decode the compressed string")
     
     return ''.join(decoded)
