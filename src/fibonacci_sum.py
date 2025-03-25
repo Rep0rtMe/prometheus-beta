@@ -17,11 +17,11 @@ def fibonacci(n):
     # Special cases for 0 and 1
     if n == 0:
         return [0]
-    if n == 1:
+    if n <= 1:
         return [0, 1]
     
     fib_seq = [0, 1]
-    while fib_seq[-1] < n:
+    while True:
         next_fib = fib_seq[-1] + fib_seq[-2]
         if next_fib > n:
             break
@@ -54,4 +54,4 @@ def fibonacciSum(arr):
     max_num = max(arr)
     
     # Generate Fibonacci sequence and sum it
-    return sum(set(fibonacci(max_num)))
+    return sum(fibonacci(max_num))
