@@ -22,8 +22,15 @@ def edmonds_karp_max_flow(graph: Dict[int, Dict[int, int]], source: int, sink: i
     if source not in graph or sink not in graph:
         raise ValueError("Source or sink node not in graph")
     
-    # Deep copy the graph to avoid modifying the original
-    graph = {node: {k: v for k, v in edges.items()} for node, edges in graph.items()}
+    # Create a residual graph that we can modify
+    residual_graph = {}
+    for node, edges in graph.items():
+        residual_graph[node] = edges.copy()
+        for neighbor in edges:
+            if neighbor not in residual_graph:
+                residual_graph[neighbor] = {}
+            if node not in residual_graph[neighbor]:
+                residual_graph[neighbor][node] = 0
     
     def bfs_find_path(graph: Dict[int, Dict[int, int]], source: int, sink: int) -> List[int]:
         """
@@ -65,7 +72,7 @@ def edmonds_karp_max_flow(graph: Dict[int, Dict[int, int]], source: int, sink: i
     # Keep finding augmenting paths
     while True:
         # Find an augmenting path
-        path = bfs_find_path(graph, source, sink)
+        path = bfs_find_path(residual_graph, source, sink)
         
         # If no path exists, we're done
         if not path:
@@ -75,27 +82,19 @@ def edmonds_karp_max_flow(graph: Dict[int, Dict[int, int]], source: int, sink: i
         path_flow = float('inf')
         for i in range(len(path) - 1):
             current, next_node = path[i], path[i+1]
-            path_flow = min(path_flow, graph[current].get(next_node, 0))
+            path_flow = min(path_flow, residual_graph[current].get(next_node, 0))
         
         # Augment flow
         max_flow += path_flow
         
-        # Update graph
+        # Update residual graph
         for i in range(len(path) - 1):
             current, next_node = path[i], path[i+1]
             
             # Reduce forward edge capacity
-            graph[current][next_node] -= path_flow
+            residual_graph[current][next_node] -= path_flow
             
             # Add/update backward edge
-            if next_node not in graph:
-                graph[next_node] = {}
-            if current not in graph[next_node]:
-                graph[next_node][current] = 0
-            graph[next_node][current] += path_flow
-            
-            # Remove zero-capacity edges
-            if graph[current][next_node] == 0:
-                del graph[current][next_node]
+            residual_graph[next_node][current] += path_flow
     
     return max_flow
