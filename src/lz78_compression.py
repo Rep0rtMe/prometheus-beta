@@ -38,7 +38,7 @@ def lz78_compress(input_text: str) -> List[Tuple[int, str]]:
     next_index = 1
     
     current_prefix = ""
-    for char in input_text:
+    for i, char in enumerate(input_text):
         # Try to extend current prefix
         current_prefix_extended = current_prefix + char
         
@@ -107,11 +107,12 @@ def lz78_decompress(compressed_data: List[Tuple[int, str]]) -> str:
         
         # Build the current sequence
         current_sequence = prefix_sequence + new_char
-        decompressed.append(current_sequence)
         
         # Add the new sequence to dictionary (if index is not 0)
-        if index != 0:
-            dictionary[next_index] = current_sequence
-            next_index += 1
+        dictionary[next_index] = current_sequence
+        next_index += 1
+        
+        # Append to decompressed result
+        decompressed.append(current_sequence)
     
     return "".join(decompressed)
