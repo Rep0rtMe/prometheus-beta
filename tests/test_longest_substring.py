@@ -20,10 +20,10 @@ def test_find_longest_substring_case_sensitivity():
 
 def test_find_longest_substring_mixed_chars():
     """Test with mixed characters"""
-    assert find_longest_substring("hello world") == "helo wrd"
+    assert find_longest_substring("hello world") == " world"
     assert find_longest_substring("!@#$%^&*()") == "!@#$%^&*()"
 
 def test_find_longest_substring_unicode():
     """Test with Unicode characters"""
     assert find_longest_substring("áéíóú") == "áéíóú"
-    assert find_longest_substring("aaáábbbccc") == "áb"
+    assert find_longest_substring("aaáábbbccc") == "aá"
