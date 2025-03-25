@@ -57,7 +57,8 @@ def test_invalid_decoding():
     codes = {'a': '0', 'b': '1'}
     
     with pytest.raises(ValueError, match="Unable to fully decode"):
-        shannon_fano_decode(codes, "010101011")  # Invalid end sequence
+        # Create an invalid compressed string that cannot be fully decoded
+        shannon_fano_decode(codes, "01012")  # Invalid sequence with an unrecognized bit
 
 def test_code_uniqueness():
     """Verify that generated codes are unique"""
