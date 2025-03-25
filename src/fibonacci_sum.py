@@ -14,11 +14,13 @@ def fibonacci(n):
     if not isinstance(n, int) or n < 0:
         raise ValueError("Input must be a non-negative integer")
     
-    # Special cases for 0 and 1
+    # Special cases for small numbers
     if n == 0:
         return [0]
-    if n <= 1:
+    if n == 1:
         return [0, 1]
+    if n == 2:
+        return [0, 1, 2]
     
     fib_seq = [0, 1]
     while True:
