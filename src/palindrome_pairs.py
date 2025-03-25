@@ -30,11 +30,11 @@ def find_palindrome_pairs(words):
             if i == j:
                 continue
             
-            # Calculate both concatenation orders
-            first_concat = words[i] + words[j]
+            # Calculate concatenation
+            concatenated = words[i] + words[j]
             
             # Check if concatenation forms a palindrome
-            if is_palindrome(first_concat):
+            if is_palindrome(concatenated):
                 result.append([i, j])
 
     return result
