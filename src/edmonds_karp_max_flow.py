@@ -23,14 +23,19 @@ def edmonds_karp_max_flow(graph: Dict[int, Dict[int, int]], source: int, sink: i
         raise ValueError("Source or sink node not in graph")
     
     # Create a residual graph that we can modify
+    # Ensure all nodes and edges are initialized 
     residual_graph = {}
+    all_nodes = set(list(graph.keys()) + 
+                    [node for edges in graph.values() for node in edges])
+    
+    # Initialize all nodes with zero capacity edges
+    for node in all_nodes:
+        residual_graph[node] = {n: 0 for n in all_nodes if n != node}
+    
+    # Copy forward edge capacities
     for node, edges in graph.items():
-        residual_graph[node] = edges.copy()
-        for neighbor in edges:
-            if neighbor not in residual_graph:
-                residual_graph[neighbor] = {}
-            if node not in residual_graph[neighbor]:
-                residual_graph[neighbor][node] = 0
+        for next_node, capacity in edges.items():
+            residual_graph[node][next_node] = capacity
     
     def bfs_find_path(graph: Dict[int, Dict[int, int]], source: int, sink: int) -> List[int]:
         """
@@ -60,7 +65,7 @@ def edmonds_karp_max_flow(graph: Dict[int, Dict[int, int]], source: int, sink: i
                 return list(reversed(path))
             
             # Explore neighbors with remaining capacity
-            for neighbor, capacity in graph.get(current, {}).items():
+            for neighbor, capacity in graph[current].items():
                 if capacity > 0 and neighbor not in parent:
                     parent[neighbor] = current
                     queue.append(neighbor)
@@ -82,7 +87,7 @@ def edmonds_karp_max_flow(graph: Dict[int, Dict[int, int]], source: int, sink: i
         path_flow = float('inf')
         for i in range(len(path) - 1):
             current, next_node = path[i], path[i+1]
-            path_flow = min(path_flow, residual_graph[current].get(next_node, 0))
+            path_flow = min(path_flow, residual_graph[current][next_node])
         
         # Augment flow
         max_flow += path_flow
