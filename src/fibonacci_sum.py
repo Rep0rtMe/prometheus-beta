@@ -22,14 +22,23 @@ def fibonacci(n):
     if n == 2:
         return [0, 1, 2]
     
-    fib_seq = [0, 1]
-    while True:
-        next_fib = fib_seq[-1] + fib_seq[-2]
+    fib_seq = [0, 1, 1, 2]
+    
+    # Keep only the last occurrence of each number
+    unique_fib = []
+    for num in fib_seq:
+        if num not in unique_fib:
+            unique_fib.append(num)
+    
+    # Generate Fibonacci sequence
+    while unique_fib[-1] < n:
+        next_fib = unique_fib[-1] + unique_fib[-2]
         if next_fib > n:
             break
-        fib_seq.append(next_fib)
+        if next_fib not in unique_fib:
+            unique_fib.append(next_fib)
     
-    return fib_seq
+    return unique_fib
 
 def fibonacciSum(arr):
     """
