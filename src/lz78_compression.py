@@ -33,33 +33,36 @@ def lz78_compress(input_text: str) -> List[Tuple[int, str]]:
         raise ValueError("Input cannot be an empty string")
     
     # Initialize dictionary and compression result
-    dictionary = {
-        "": 0  # Empty string has index 0
-    }
+    dictionary = {}
     compressed = []
-    current_sequence = ""
     next_index = 1
     
-    # Compress the input text
+    current_prefix = ""
     for char in input_text:
-        # Try to extend current sequence
-        extended_sequence = current_sequence + char
+        # Try to extend current prefix
+        current_prefix_extended = current_prefix + char
         
-        if extended_sequence in dictionary:
-            # If sequence exists, continue building
-            current_sequence = extended_sequence
+        if current_prefix_extended in dictionary:
+            # If the extended prefix exists, update current prefix
+            current_prefix = current_prefix_extended
         else:
-            # Add new sequence to dictionary and output compression tuple
-            compressed.append((dictionary.get(current_sequence, 0), char))
-            dictionary[extended_sequence] = next_index
+            # Find the index of current prefix or 0 if not found
+            prefix_index = dictionary.get(current_prefix, 0)
+            
+            # Add the tuple to compressed data
+            compressed.append((prefix_index, char))
+            
+            # Add the extended prefix to dictionary
+            dictionary[current_prefix_extended] = next_index
             next_index += 1
             
-            # Reset current sequence
-            current_sequence = ""
+            # Reset current prefix
+            current_prefix = ""
     
-    # Handle any remaining sequence
-    if current_sequence:
-        compressed.append((dictionary.get(current_sequence, 0), ""))
+    # Handle any remaining prefix
+    if current_prefix:
+        prefix_index = dictionary.get(current_prefix, 0)
+        compressed.append((prefix_index, ""))
     
     return compressed
 
@@ -94,19 +97,19 @@ def lz78_decompress(compressed_data: List[Tuple[int, str]]) -> str:
     
     # Initialize dictionary and decompression
     dictionary = {0: ""}
-    decompressed = []
     next_index = 1
+    decompressed = []
     
     # Decompress the data
-    for index, char in compressed_data:
-        # Retrieve the sequence from dictionary
-        prefix = dictionary.get(index, "")
+    for index, new_char in compressed_data:
+        # Retrieve the prefix sequence
+        prefix_sequence = dictionary.get(index, "")
         
         # Build the current sequence
-        current_sequence = prefix + char
+        current_sequence = prefix_sequence + new_char
         decompressed.append(current_sequence)
         
-        # Add the new sequence to dictionary
+        # Add the new sequence to dictionary (if index is not 0)
         if index != 0:
             dictionary[next_index] = current_sequence
             next_index += 1
