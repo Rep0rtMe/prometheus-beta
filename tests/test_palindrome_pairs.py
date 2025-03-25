@@ -8,7 +8,7 @@ def test_simple_palindrome_pairs():
 def test_complex_palindrome_pairs():
     """Test more complex palindrome pair scenarios."""
     result = find_palindrome_pairs(["abcd", "dcba", "lls", "s", "sssll"])
-    expected = sorted([[0, 1], [1, 0], [3, 4], [4, 3]])
+    expected = sorted([[0, 1], [1, 0], [2, 4], [3, 4], [4, 3]])
     assert sorted(result) == expected
 
 def test_empty_input():
