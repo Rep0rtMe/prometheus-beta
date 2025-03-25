@@ -55,10 +55,9 @@ def test_complex_input():
 def test_invalid_decoding():
     """Test handling of invalid compressed string"""
     codes = {'a': '0', 'b': '1'}
-    compressed = "01010101"
     
     with pytest.raises(ValueError, match="Unable to fully decode"):
-        shannon_fano_decode(codes, "010101011")  # Extra bit at the end
+        shannon_fano_decode(codes, "010101011")  # Invalid end sequence
 
 def test_code_uniqueness():
     """Verify that generated codes are unique"""
