@@ -29,4 +29,5 @@ def find_missing_numbers(arr):
     # If descending
     else:
         start, end = arr[-1], arr[0]
-        return [num for num in range(start + 1, end) if num not in arr]
+        missing = [num for num in range(start + 1, end) if num not in arr]
+        return sorted(missing, reverse=True)
