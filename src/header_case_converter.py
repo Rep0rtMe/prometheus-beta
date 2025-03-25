@@ -3,7 +3,7 @@ def convert_to_header_case(input_string):
     Convert a given string to header case.
     
     Header case is a style where the first letter of each word is capitalized,
-    and words are separated by spaces.
+    and words are separated by a single space.
     
     Args:
         input_string (str): The input string to convert.
@@ -32,22 +32,26 @@ def convert_to_header_case(input_string):
     if not input_string:
         return ""
     
-    # Replace common separators with space
-    separators = ['-', '_']
-    for sep in separators:
-        input_string = input_string.replace(sep, ' ')
-    
-    # Handle camelCase or mixedCase
+    # Split the string into words considering multiple separators and camelCase
     words = []
-    current_word = input_string[0].upper()
-    for char in input_string[1:]:
-        if char.isupper():
-            # If uppercase, start a new word
+    current_word = ""
+    for i, char in enumerate(input_string):
+        # Detect word boundaries
+        if char.isupper() and current_word and not input_string[i-1].isupper():
             words.append(current_word)
             current_word = char
-        else:
+        elif char in ['-', '_', ' '] and current_word:
+            words.append(current_word)
+            current_word = ""
+        elif not char.isspace():
             current_word += char
-    words.append(current_word)
     
-    # Capitalize each word and join
-    return ' '.join(word.capitalize() for word in words)
+    # Append the last word
+    if current_word:
+        words.append(current_word)
+    
+    # Capitalize each word and remove any empty strings
+    capitalized_words = [word.capitalize() for word in words if word]
+    
+    # Join the words
+    return ' '.join(capitalized_words)
