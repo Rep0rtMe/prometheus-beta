@@ -26,22 +26,24 @@ def find_longest_substring(s: str) -> str:
     if not s:
         return ""
     
-    # Sliding window approach
-    longest_substring = ""
-    current_substring = ""
+    # Sliding window approach with character tracking
+    start = 0
+    max_length = 0
+    max_start = 0
+    char_index = {}
     
-    for char in s:
-        # If character is already in current substring, 
-        # slice from the repeated character's next position
-        if char in current_substring:
-            # Find the index of the first occurrence of the repeated character
-            index = current_substring.index(char)
-            current_substring = current_substring[index + 1:] + char
-        else:
-            current_substring += char
+    for i, char in enumerate(s):
+        # If character is repeated and its last occurrence is after or at start
+        if char in char_index and char_index[char] >= start:
+            # Move start to the next position after the last occurrence
+            start = char_index[char] + 1
         
-        # Update longest substring if current is longer
-        if len(current_substring) > len(longest_substring):
-            longest_substring = current_substring
+        # Update last seen index of character
+        char_index[char] = i
+        
+        # Update max substring if current is longer
+        if i - start + 1 > max_length:
+            max_length = i - start + 1
+            max_start = start
     
-    return longest_substring
+    return s[max_start:max_start + max_length]
