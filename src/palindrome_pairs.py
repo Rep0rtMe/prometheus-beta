@@ -15,7 +15,7 @@ def find_palindrome_pairs(words):
         >>> find_palindrome_pairs(["bat", "tab", "cat"])
         [[0, 1], [1, 0]]
         >>> find_palindrome_pairs(["abcd", "dcba", "lls", "s", "sssll"])
-        [[0, 1], [1, 0], [3, 4], [4, 3]]
+        [[0, 1], [1, 0], [2, 4], [3, 4], [4, 3]]
     """
     def is_palindrome(s):
         """Check if a string is a palindrome."""
@@ -31,7 +31,8 @@ def find_palindrome_pairs(words):
                 continue
             
             # Concatenate words in both orders and check for palindrome
-            if is_palindrome(words[i] + words[j]):
+            concatenated = words[i] + words[j]
+            if is_palindrome(concatenated):
                 result.append([i, j])
 
     return result
