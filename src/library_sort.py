@@ -32,10 +32,17 @@ def library_sort(arr):
         left, right = 0, i
         while left < right:
             mid = (left + right) // 2
-            if arr[mid] <= key:
-                left = mid + 1
-            else:
-                right = mid
+            try:
+                if arr[mid] <= key:
+                    left = mid + 1
+                else:
+                    right = mid
+            except TypeError:
+                # If direct comparison fails, compare string representations
+                if str(arr[mid]) <= str(key):
+                    left = mid + 1
+                else:
+                    right = mid
         
         # Shift elements to make space for insertion
         j = i
